@@ -13,7 +13,7 @@ Now you should be ready to get started 👌
 
 ## __Installation:__
 1. Move the contents of the Website folder into your main directory of your website.
-2. Open to the [up.php](repo/blob/master/Website/up.php) and edit `$secret_key = "make a key here";` with a key. You'll need it later so make sure it's saved.
+2. Open to the [up.php](/Website/up.php) and edit `$secret_key = "make a key here";` with a key. You'll need it later so make sure it's saved.
 3. Move the contents of the Discord Bot folder into the machine you'll be using to host the bot.
 4. Once the files have been transferred, open up the [config.json](/Discord%20Bot/config.json) and replace the contents with the information it ask's for.
 5. The last thing needed to be filled inside the [config.json](/Discord%20Bot/config.json) in is they key you made in step 2.
