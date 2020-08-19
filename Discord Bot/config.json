@@ -1,0 +1,7 @@
+  
+{
+    "botToken": "you bot token",
+    "botPrefix": "l!",
+    "domainURL": "your domain URL",
+    "uploadKey": "use the key you made here"
+}

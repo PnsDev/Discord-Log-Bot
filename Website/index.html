@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="discord.css">
+    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap.min.css">
+
+    <title>Hello, world!</title>
+</head>
+
+<body style="background-color: #36393e;">
+    <!-- Image and text -->
+    <nav class="navbar navbar-dark" style="border-bottom-color: #36393e; background-color: #36393e; color: #36393e;">
+        <a class="navbar-brand">
+            <img src="https://discord.com/assets/1c8a54f25d101bdc607cec7228247a9a.svg" width="30" height="30"
+                class="d-inline-block align-top" alt="" loading="lazy"> Discord Logs
+        </a>
+        <button type="button" class="btn btn-light" onclick="location.href=`https://github.com/PnsDev/Discord-Log-Bot`;"><img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Ei-sc-github.svg" width="30" height="30"></button>
+    </nav>
+
+
+    <div class="discord-messages container" id='discordchat' style="border: 0px;"></div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+
+    <script>
+        document.body.onload = readTextFile();
+
+
+        function addElement(array) {
+
+            let spanUsername = document.createElement("span");
+            spanUsername.className = "discord-author-username";
+            spanUsername.textContent = array.shift();
+
+            // create main div element 
+            let newMsg = document.createElement("div");
+            newMsg.className = "discord-message";
+
+            // create main author element
+            let msgAuthor = document.createElement("div");
+            msgAuthor.className = "discord-author-avatar";
+
+            let authorImg = document.createElement("img");
+            authorImg.src = array.shift();
+
+            // create main content element
+            let msgContent = document.createElement("div");
+            msgContent.className = "discord-message-content";
+
+            let spanInfo = document.createElement("span");
+            spanInfo.className = "discord-author-info";
+
+
+            const botTag = document.createElement("span");
+            botTag.className = "discord-bot-tag";
+            botTag.textContent = 'Bot';
+
+
+            msgAuthor.appendChild(authorImg), spanInfo.appendChild(spanUsername);
+
+            if (array.shift().includes('true')) spanInfo.appendChild(botTag);
+
+            let spanDate = document.createElement("span");
+            spanDate.className = "discord-message-timestamp", spanDate.textContent = array.shift();
+
+            spanInfo.appendChild(spanDate), msgContent.appendChild(spanInfo);
+
+            while (array.length != 0) {
+                let msgData = array.shift().split('______');
+                if (msgData[0] == 'false') {
+                    const newMsg = document.createElement("div");
+                    newMsg.className = "discord-message-body";
+                    newMsg.textContent = msgData[1];
+                    msgContent.appendChild(newMsg);
+
+                }
+            }
+
+            newMsg.appendChild(msgAuthor);
+            newMsg.appendChild(msgContent);
+
+
+            document.getElementById('discordchat').appendChild(newMsg)
+        }
+
+        function readTextFile() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+            $.ajaxSetup({
+                error: AjaxError
+            });
+            $.get(`./logs/${urlParams.get('id')}.txt`, function (txt, err) {
+
+                if (txt) console.log('there was an error')
+
+                const array = txt.split('``````');
+                count = 0;
+                array.forEach(element => {
+                    count++;
+                    element = element.split('\n');
+                    if (count != 1) element.shift();
+                    addElement(element);
+                });
+                console.log('Loaded ' + count + ' messages');
+            })
+        }
+
+        function AjaxError(x, e){
+            return addElement(['Log Bot',
+                'https://images.discordapp.net/avatars/347837391622504463/360a77054e1fbc19d85b07b1ed825418.png',
+                'true', '', 'false______Hey!', `false______The chat you're looking can't be found 🙁`
+            ])
+        }
+    </script>
+</body>
+
+</html>
